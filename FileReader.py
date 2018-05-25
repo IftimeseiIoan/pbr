@@ -29,10 +29,7 @@ class FileReader:
                             found_command = False
                             open_parenthesis = 0
                             self.process_clips_command(buffer)
-                            #print ("Found clips rule :" + buffer)
                             buffer = str()
-
-
                     else:
                         buffer+=character
 
@@ -59,11 +56,23 @@ class FileReader:
                 self.rule_processor.assert_process(first_argument,second_argument)
             else:
                 return
+        elif rule == "facts":
+            print(self.rule_processor.engine.facts)
+        elif rule == "exit":
+            exit(0)
+        elif rule == "clear":
+            self.rule_processor.engine.reset()
+        elif rule == "reset":
+            self.rule_processor.engine.reset()
+        elif rule == "run":
+            self.rule_processor.engine.run()
+
 
     def find_instruction(self,command):
         instruction = str()
         command = command[1:]
         instruction += command.split()[0]
+        instruction=instruction.replace(')','')
         return instruction
 
 
