@@ -1,0 +1,11 @@
+(assert (color green))
+(assert (duck))
+(assert (uaic lame))
+(facts)
+
+(defrule   example-rule   "This is an example of a simple rule"
+   (refrigerator light on)
+   (refrigerator door open)
+   =>
+   (assert (refrigerator food spoiled))
+   (printout t "action activate-sprinkler-system" crlf))

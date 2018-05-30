@@ -1,0 +1,24 @@
+digraph {
+ 2647556897872 [label="BusNode"];
+2647556897872 -> 2647549598408 [label="activate"];
+2647549598408 [label="FeatureTesterNode: type() == refrigerator"];
+2647549598408 -> 2647556978056 [label="activate"];
+2647556978056 [label="FeatureTesterNode: refrigerator (equal_literal) L('light on')"];
+2647556978056 -> 2647556978336 [label="activate"];
+2647556978336 [label="FeatureTesterNode: __pattern_2647556872856__ <= <Fact>"];
+2647556978336 -> 2647556978840 [label="activate_left"];
+2647556978840 [label="OrdinaryMatchNode: SameContextCheck"];
+2647556978840 -> 2647550801792 [label="activate"];
+2647550801792 [label="ConflictSetNode: refrigerator_light_on_refrigerator_door_open"];
+2647549598408 -> 2647556978448 [label="activate"];
+2647556978448 [label="FeatureTesterNode: refrigerator (equal_literal) L('door open')"];
+2647556978448 -> 2647556978560 [label="activate"];
+2647556978560 [label="FeatureTesterNode: __pattern_2647556872680__ <= <Fact>"];
+2647556978560 -> 2647556978840 [label="activate_right"];
+2647556978840 [label="OrdinaryMatchNode: SameContextCheck"];
+2647550801792 [label="ConflictSetNode: refrigerator_light_on_refrigerator_door_open"];
+2647556897872 -> 2647556978616 [label="activate"];
+2647556978616 [label="FeatureTesterNode: type() == InitialFact"];
+2647556978616 -> 2647556978672 [label="activate"];
+2647556978672 [label="FeatureTesterNode: __pattern_2647556873296__ <= <Fact>"]; 
+}
