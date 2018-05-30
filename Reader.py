@@ -77,20 +77,41 @@ class Reader:
         return False
 
 
-    def process_clips_command(self,command):
-        print("Found clips rule:" + command)
-        print("Start proccesing it")
+    def process_clips_command(self,command,to_execute=True):
+        if to_execute==False:
+            pass
+        else:
+            print("Found clips rule:" + command)
+            print("Start proccesing it")
         command=command.replace("  "," ")
         rule = self.find_instruction(command)
+        result=list()
 
         if rule == "assert":
+            first_argument=None
+            second_argument=None
             arguments = re.search(r"\((.+ \((.+) (.+)\))\)",command)
             if(str(type(arguments)) == "<class '_sre.SRE_Match'>"):
                 first_argument = arguments.group(2)
                 second_argument = arguments.group(3)
-                self.rule_processor.assert_process(first_argument,second_argument)
+                if to_execute==True:
+                    self.rule_processor.assert_process(first_argument,second_argument)
+                else:
+                    result.append("assert")
+                    result.append(first_argument)
+                    result.append(second_argument)
+                    return (result)
             else:
-                return
+                arguments = re.search(r"\((.+ \((.+)\))\)",command)
+                if(str(type(arguments)) == "<class '_sre.SRE_Match'>"):
+                    first_argument = arguments.group(2)
+                    second_argument = None
+                    if to_execute==True:
+                        self.rule_processor.assert_process(first_argument,second_argument)
+                    else:
+                        result.append(first_argument)
+                        result.append(second_argument)
+                        return ("assert",result)
         elif rule == "facts":
             print(self.rule_processor.engine.facts)
         elif rule == "exit":
@@ -111,14 +132,24 @@ class Reader:
         elif rule== "defrule":
             arrow_position = command.find("=>")
             command_for_arguments1 = command[1:arrow_position]
-            command_for_arguments2 = command[arrow_position:len(command)-1]
+            command_for_arguments2 = command[arrow_position+2:len(command)-1]
             condition_arguments = re.findall(r"\(.+\)",command_for_arguments1)
             if len(condition_arguments) <= 0:
                 return
             rules_arguments = re.findall(r"\(assert\s\(.+\)\)",command_for_arguments2)
-            if len(rules_arguments) <= 0:
-                return
-            self.rule_processor.defrule_process(condition_arguments,rules_arguments)
+            aux_rules_arguments = re.findall(r"\(printout.+\s*\)",command_for_arguments2)
+            rules_arguments += aux_rules_arguments
+            if to_execute==True:
+                self.rule_processor.defrule_process(condition_arguments,rules_arguments)
+        elif rule=="printout":
+            command=command[:len(command)-1]
+            arguments_list = command.split()
+            arguments_list = arguments_list[1:]
+            result=list()
+            result.append("printout")
+            for argument in arguments_list:
+                result.append(argument)
+            return(result)
 
 
     def find_instruction(self,command):
