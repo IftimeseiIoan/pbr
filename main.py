@@ -93,10 +93,12 @@ class MainApp(App):
             self.image.reload()
 
     def show_example1(self, value):
+        self.label.text = "Example 1"
         self.image.source = self.dirpath + "\\example1.png"
         self.image.reload()
 
     def show_example2(self, value):
+        self.label.text = "Example 2"
         self.image.source = self.dirpath + "\\example2.png"
         self.image.reload()
 
