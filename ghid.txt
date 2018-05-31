@@ -1,0 +1,7 @@
+Pentru a putea rula proiectul trebuie sa aveti instalate urmatoarele :
+	1.python 3.6+
+	2.kivy
+	3.Graphviz (http://www.graphviz.org/) + de adaugat in Environment variables calea spre folderul /bin (ex:C:\Program Files (x86)\Graphviz2.38\bin)
+
+Mod de folosire:
+	Se ruleaza scriptul main.py . In interfata (ce este afisata de modulul kivy) trebuie introdus calea exacta catre fisier. Apoi Generate Rete iar reteaua va fi afisata in interfata

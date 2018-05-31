@@ -1,6 +1,8 @@
 import os.path
 import os
 
+from kivy.uix.label import Label
+
 from Reader import Reader
 from RuleProcessor import RuleProcessor
 
@@ -35,6 +37,11 @@ def generate_rete(filename):
     buffer += '"\\graph.vd"\n'
     buffer += "output_path = dirpath +"
     buffer += '"\\graph.png"\n'
+
+    ################  create examples ##############
+    #buffer += '"\\example1.png"\n'
+    #buffer += '"\\example2.png"\n'
+
     buffer += "command_to_execute=\"dot -T png \"+graph_path +\" -o \"+output_path\n"
     buffer += "os.popen(command_to_execute)\n"
     fd = open("result_script.py", "w")
@@ -44,27 +51,55 @@ def generate_rete(filename):
     os.popen(command_to_execute)
 
 class MainApp(App):
+    dirpath = os.getcwd()
     image = Image(pos_hint={'top': 0.9})
-    textinput = TextInput(text='Enter path', size_hint=(1, 0.08))
+    label = Label(text='Enter path to .clp file.',size_hint=(1, 0.07))
+    textinput = TextInput(size_hint=(1, 0.07))
     window = BoxLayout(orientation='vertical')
+    buttons = BoxLayout(orientation='horizontal',size_hint=(1, 0.07))
 
 
     def build(self):
-        self.window.add_widget(self.textinput)
         self.image.keep_ratio = False
         self.image.allow_stretch = True
-        button1 = Button(text="Generate Rete", size_hint=(0.2, 0.1))
+        button1 = Button(text="Generate Rete",
+                         background_normal= '',background_color=(.1, .3, .3, .9))
         button1.bind(on_press=self.show_rete)
+
+        button2 = Button(text="Show example 1",
+                         background_normal='', background_color=(.2, .5, .5, .8))
+        button2.bind(on_press=self.show_example1)
+
+        button3 = Button(text="Show example 2",
+                         background_normal='', background_color=(.1, .6, .5, .9))
+        button3.bind(on_press=self.show_example2)
+
+        self.window.add_widget(self.label)
+        self.window.add_widget(self.textinput)
         self.window.add_widget(self.image)
-        self.window.add_widget(button1)
+        self.buttons.add_widget(button1)
+        self.buttons.add_widget(button2)
+        self.buttons.add_widget(button3)
+        self.window.add_widget(self.buttons)
         return self.window
 
     def show_rete(self, value):
         filename=self.textinput.text
-        generate_rete(filename)
-        dirpath = os.getcwd()
-        self.image.source = dirpath + "\\graph.png"
+        if not os.path.isfile(filename):
+            self.label.text="The file does not exist. Enter another path."
+        else:
+            generate_rete(filename)
+            self.image.source = self.dirpath + "\\graph.png"
+            self.image.reload()
+
+    def show_example1(self, value):
+        self.image.source = self.dirpath + "\\example1.png"
         self.image.reload()
+
+    def show_example2(self, value):
+        self.image.source = self.dirpath + "\\example2.png"
+        self.image.reload()
+
 
 if __name__ == '__main__':
     MainApp().run()
