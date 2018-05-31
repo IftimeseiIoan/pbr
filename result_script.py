@@ -2,24 +2,24 @@ from graphviz import Digraph
 from pyknow import *
 import os
 
-class color(Fact):
+class PrinterDoesNotPrint(Fact):
 	 pass
-class duck(Fact):
+class ARedLightIsFlashing(Fact):
 	 pass
-class uaic(Fact):
-	 pass
-class refrigerator(Fact):
+class PrinterIsNotRecognised(Fact):
 	 pass
 class Engine(KnowledgeEngine):
-	@Rule(refrigerator(refrigerator='light on')&refrigerator(refrigerator='door open'))
-	def refrigerator_light_on_refrigerator_door_open(self):
-		engine.declare(Fact(refrigerator='food spoiled'))
-		print("action activate-sprinkler-system ")
+	@Rule(PrinterDoesNotPrint(PrinterDoesNotPrint='yes')&ARedLightIsFlashing(ARedLightIsFlashing='yes')&PrinterIsNotRecognised(PrinterIsNotRecognised='yes'))
+	def PrinterDoesNotPrint_yes_ARedLightIsFlashing_yes_PrinterIsNotRecognised_yes(self):
+		print("Check the printer-computer cable  ")
+		print("Ensure printer software is installed  ")
+		print("Check/replace ink  ")
+	@Rule(PrinterDoesNotPrint(PrinterDoesNotPrint='yes')&ARedLightIsFlashing(ARedLightIsFlashing='yes')&PrinterIsNotRecognised(PrinterIsNotRecognised='no'))
+	def PrinterDoesNotPrint_yes_ARedLightIsFlashing_yes_PrinterIsNotRecognised_no(self):
+		print("Check/replace ink  ")
+		print("Check for paper jam  ")
 engine=Engine()
 engine.reset()
-engine.declare(color(color='green'))
-engine.declare(duck(duck='None'))
-engine.declare(uaic(uaic='lame'))
 graph=engine.matcher.print_network()
 fd=open("graph.vd","w")
 fd.write(graph)
